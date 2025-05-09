@@ -57,7 +57,7 @@ const WalletApp: React.FC = () => {
       }
     };
     fetchUserTokens();
-  }, [activeTab]);
+  }, [activeTab, publicKey, setTokens]);
   const handleCopytoClipboard = (value: string) => {
     navigator.clipboard?.writeText(value).then(
       () => {

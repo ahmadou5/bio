@@ -49,7 +49,7 @@ const StyledQRCode: React.FC<StyledQRCodeProps> = ({ data, size = 290 }) => {
       }
     };
     initQR();
-  }, [size]);
+  }, [size, data]);
 
   useEffect(() => {
     if (qrCode && qrContainer.current) {
