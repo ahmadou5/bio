@@ -1,3 +1,4 @@
+"use client";
 import React, { useEffect, ReactNode, MouseEvent } from "react";
 
 interface ModalProps {

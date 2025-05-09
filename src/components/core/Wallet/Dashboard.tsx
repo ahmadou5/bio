@@ -1,3 +1,4 @@
+"use client";
 import { useAppStore } from "@/store/appStore";
 import { TrendingUp } from "lucide-react";
 import React from "react";
