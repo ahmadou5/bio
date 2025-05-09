@@ -1,19 +1,16 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { LineChart, Line, ResponsiveContainer } from "recharts";
+
 import {
   Home,
   BarChart2,
   Settings,
   Wallet,
-  ChevronDown,
   Plus,
-  TrendingUp,
   Clipboard,
-  ClipboardCopy,
   CopyIcon,
 } from "lucide-react";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { useWallet } from "@lazorkit/wallet";
 import { useAuthStore } from "../store/authStore";
 import Dashboard from "./core/Wallet/Dashboard";
@@ -25,59 +22,10 @@ import { getUserTokens } from "@/lib/assets.lib";
 import { ENV } from "@/lib/constant/env.constant";
 
 // Define types
-interface ChartDataPoint {
-  name: string;
-  value: number;
-}
-
-// Custom hook for window size
-const useWindowSize = () => {
-  // Initialize with undefined for server-side rendering
-  const [windowSize, setWindowSize] = useState<{
-    width: number | undefined;
-    height: number | undefined;
-  }>({
-    width: undefined,
-    height: undefined,
-  });
-
-  useEffect(() => {
-    // Only execute on client side
-    if (typeof window !== "undefined") {
-      // Handler to call on window resize
-      const handleResize = () => {
-        setWindowSize({
-          width: window.innerWidth,
-          height: window.innerHeight,
-        });
-      };
-
-      // Add event listener
-      window.addEventListener("resize", handleResize);
-
-      // Call handler right away
-      handleResize();
-
-      // Remove event listener on cleanup
-      return () => window.removeEventListener("resize", handleResize);
-    }
-  }, []);
-
-  return windowSize;
-};
 
 type TabType = "Dashboard" | "Coins" | "NFTs";
 
 // Sample data for the chart
-const data: ChartDataPoint[] = [
-  { name: "Jan", value: 195000 },
-  { name: "Feb", value: 200000 },
-  { name: "Mar", value: 190000 },
-  { name: "Apr", value: 205000 },
-  { name: "May", value: 210000 },
-  { name: "Jun", value: 208000 },
-  { name: "Jul", value: 991089 },
-];
 
 const WalletApp: React.FC = () => {
   const { disconnect, publicKey } = useWallet();
