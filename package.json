@@ -11,6 +11,7 @@
   "dependencies": {
     "@api/vybe-api": "file:.api/apis/vybe-api",
     "@lazorkit/wallet": "^0.9.6",
+    "@metaplex-foundation/js": "^0.20.1",
     "@radix-ui/themes": "^3.2.1",
     "@solana/spl-token": "^0.4.13",
     "@solana/web3.js": "^1.98.2",

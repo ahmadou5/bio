@@ -1,15 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 
-import {
-  Home,
-  BarChart2,
-  Settings,
-  Wallet,
-  Plus,
-  Clipboard,
-  CopyIcon,
-} from "lucide-react";
+import { Settings, Clipboard, CopyIcon } from "lucide-react";
 import toast from "react-hot-toast";
 import { useWallet } from "@lazorkit/wallet";
 import { useAuthStore } from "../store/authStore";
@@ -19,11 +11,10 @@ import Modal from "./base/modals/Modal";
 import { useAppStore } from "@/store/appStore";
 import StyledQRCode from "./ui/QrCode";
 import { getUserTokens } from "@/lib/assets.lib";
-import { ENV } from "@/lib/constant/env.constant";
 
 // Define types
 
-type TabType = "Dashboard" | "Coins" | "NFTs";
+type TabType = "Dashboard" | "SPLs";
 
 // Sample data for the chart
 
@@ -37,6 +28,7 @@ const WalletApp: React.FC = () => {
     isSendModal,
     toggleReceiveModal,
     tokens,
+
     setTokens,
   } = useAppStore();
   const handleTabChange = (tab: TabType): void => {
@@ -46,16 +38,18 @@ const WalletApp: React.FC = () => {
     const fetchUserTokens = async () => {
       try {
         const assets = await getUserTokens(
-          publicKey || "BwY8CufbQMF7YPsPEfere1DhYPehTBPSpRJJKG2gTvDq",
-          ENV.RPC_URL ||
-            "https://mainnet.helius-rpc.com/?api-key=e5fc821c-2b64-4d66-9d88-7cf162a5ffc8"
+          "BwY8CufbQMF7YPsPEfere1DhYPehTBPSpRJJKG2gTvDq",
+          "https://mainnet.helius-rpc.com/?api-key=e5fc821c-2b64-4d66-9d88-7cf162a5ffc8"
         );
-        console.log("...tokens", assets?.data.tokens);
-        setTokens(assets?.data.tokens);
+        //console.log("...tokens", assets);
+        if (assets) {
+          setTokens(assets);
+        }
       } catch (error) {
         console.error(error);
       }
     };
+
     fetchUserTokens();
   }, [activeTab, publicKey, setTokens]);
   const handleCopytoClipboard = (value: string) => {
@@ -94,13 +88,13 @@ const WalletApp: React.FC = () => {
             className="w-8 h-8 bg-black rounded-full flex items-center justify-center"
             aria-label="Add new"
           >
-            <Plus size={16} color="white" />
+            <Settings size={16} color="white" />
           </button>
         </div>
 
         {/* Tab navigation */}
         <div className="flex space-x-4 mb-6">
-          {(["Dashboard", "Coins", "NFTs"] as TabType[]).map((tab) => (
+          {(["Dashboard", "SPLs"] as TabType[]).map((tab) => (
             <button
               key={tab}
               className={`${
@@ -116,9 +110,26 @@ const WalletApp: React.FC = () => {
             </button>
           ))}
         </div>
-        {activeTab === "Coins" && (
-          <p>{tokens && tokens?.map((token) => <>{token.name}</>)}</p>
+        {activeTab === "SPLs" && (
+          <div className="h-auto items-center flex-row w-full">
+            {tokens &&
+              tokens?.map((token, i) => (
+                <div
+                  className=" bg-black h-16 py-2 mt-2 mb-2 rounded-xl px-3 ml-auto mr-auto"
+                  key={i}
+                >
+                  {token.mint}
+                  <p>{token.name}</p>
+                  <img
+                    src={token?.image || "/solana"}
+                    alt="hey Solana"
+                    className="h-8 w-8"
+                  />
+                </div>
+              ))}
+          </div>
         )}
+
         {activeTab === "Dashboard" && <Dashboard />}
         <Modal
           isOpen={isReceiveModal}
@@ -154,37 +165,6 @@ const WalletApp: React.FC = () => {
         </Modal>
 
         {/* Bottom navigation */}
-        <div className="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-white flex justify-between items-center py-4 px-6 border-t border-gray-100">
-          <button
-            className="flex flex-col items-center text-black"
-            aria-label="Home"
-            aria-current="page"
-          >
-            <Home size={22} />
-            <span className="text-xs mt-1">Home</span>
-          </button>
-          <button
-            className="flex flex-col items-center text-gray-400"
-            aria-label="Stats"
-          >
-            <BarChart2 size={22} />
-            <span className="text-xs mt-1">Stats</span>
-          </button>
-          <button
-            className="flex flex-col items-center text-gray-400"
-            aria-label="Wallet"
-          >
-            <Wallet size={22} />
-            <span className="text-xs mt-1">Wallet</span>
-          </button>
-          <button
-            className="flex flex-col items-center text-gray-400"
-            aria-label="Settings"
-          >
-            <Settings size={22} />
-            <span className="text-xs mt-1">Settings</span>
-          </button>
-        </div>
       </div>
     </div>
   );

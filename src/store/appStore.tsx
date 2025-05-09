@@ -1,15 +1,13 @@
 import { create } from "zustand";
 
-export interface tokens {
+interface UpdatedTokenType {
   mint: string;
   amount: number;
   decimals: number;
   name: string;
   symbol: string;
-  uri: string;
-  image: string;
-  price: number;
-  [key: string]: unknown;
+  uri: string | null;
+  image: string | null;
 }
 
 export interface nft {
@@ -35,10 +33,10 @@ export interface nft {
 
 interface AppStore {
   nfts: nft[];
-  tokens: tokens[];
+  tokens: UpdatedTokenType[];
   isReceiveModal: boolean;
   isSendModal: boolean;
-  setTokens: (tokens: tokens[]) => void;
+  setTokens: (tokens: UpdatedTokenType[]) => void;
   setNfts: (nfts: nft[]) => void;
   toggleSendModal: () => void;
 

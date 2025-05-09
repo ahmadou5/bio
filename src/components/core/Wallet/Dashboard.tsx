@@ -1,6 +1,7 @@
 "use client";
+
 import { useAppStore } from "@/store/appStore";
-import { TrendingUp } from "lucide-react";
+import { TrendingUp, Home } from "lucide-react";
 import React from "react";
 import { Line, LineChart, ResponsiveContainer } from "recharts";
 
@@ -63,6 +64,16 @@ function Dashboard() {
             />
           </LineChart>
         </ResponsiveContainer>
+      </div>
+      <div className="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-white flex justify-center items-center py-4 px-6 border-t border-gray-100">
+        <button
+          className="flex flex-col items-center text-black"
+          aria-label="Home"
+          aria-current="page"
+        >
+          <Home size={22} />
+          <span className="text-xs mt-1">Home</span>
+        </button>
       </div>
     </div>
   );
