@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 
-import { Settings, Clipboard, CopyIcon } from "lucide-react";
+import { Settings, CopyIcon } from "lucide-react";
 import toast from "react-hot-toast";
 import { useWallet } from "@lazorkit/wallet";
 import { useAuthStore } from "../store/authStore";
@@ -78,7 +78,7 @@ const WalletApp: React.FC = () => {
               </p>
             </div>
             <div>
-              <Clipboard className="text-black" />
+              <CopyIcon className="text-black ml-2 mr-2" size={19} />
             </div>
           </div>
           <button
@@ -112,7 +112,7 @@ const WalletApp: React.FC = () => {
           ))}
         </div>
         {activeTab === "SPLs" && (
-          <div className="h-auto items-center overflow-y-auto flex-row w-full">
+          <div className="h-auto items-center overflow-y-auto scrollbar-hide flex-row w-full">
             {tokens &&
               tokens?.map((token, i) => (
                 <TokenCard
@@ -133,7 +133,7 @@ const WalletApp: React.FC = () => {
           onClose={toggleReceiveModal}
         >
           <div className="">
-            <p className="px-2 text-xl font-extrabold text-center mb-2">
+            <p className="px-2 text-xl text-black font-extrabold text-center mb-2">
               Send Solana and SPL tokens to this address only
             </p>
             <div className="bg-black/5 py-2 px-3 rounded-md">

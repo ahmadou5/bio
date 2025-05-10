@@ -2,37 +2,54 @@
 
 import TokenCard from "@/components/ui/TokenCard";
 import { useAppStore } from "@/store/appStore";
-import { TrendingUp, Home } from "lucide-react";
-import React from "react";
-import { Line, LineChart, ResponsiveContainer } from "recharts";
+import { Home } from "lucide-react";
+import React, { useEffect } from "react";
+import { Connection, LAMPORTS_PER_SOL, PublicKey } from "@solana/web3.js";
+import Chart from "./Chart";
+import { getNativePrice } from "@/lib/helpers.lib";
+import { useWallet } from "@lazorkit/wallet";
+import { ENV } from "@/lib/constant/env.constant";
 
-// Define types
-interface ChartDataPoint {
-  name: string;
-  value: number;
-}
-
-const data: ChartDataPoint[] = [
-  { name: "Jan", value: 195000 },
-  { name: "Feb", value: 200000 },
-  { name: "Mar", value: 190000 },
-  { name: "Apr", value: 205000 },
-  { name: "May", value: 210000 },
-  { name: "Jun", value: 208000 },
-  { name: "Jul", value: 991089 },
-];
 function Dashboard() {
   const { toggleReceiveModal, toggleSendModal } = useAppStore();
+  const { publicKey } = useWallet();
+  const [nativePrice, setNativePrice] = React.useState<number>(0);
+  const [nativeBalance, setNativeBalance] = React.useState<number>(0);
+  const connection = new Connection(ENV.RPC_URL || "", {
+    commitment: "confirmed",
+  });
+  useEffect(() => {
+    const fetchSolPrice = async () => {
+      try {
+        const price = await getNativePrice("solana");
+        setNativePrice(price);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    const fetchSolBalance = async () => {
+      try {
+        if (!publicKey) {
+          return;
+        }
+        const user = new PublicKey(publicKey);
+        const balance = await connection.getBalance(user);
+        setNativeBalance(balance / LAMPORTS_PER_SOL);
+      } catch (error) {
+        throw error;
+      }
+    };
+    fetchSolBalance();
+    fetchSolPrice();
+  }, []);
   return (
     <div>
       {" "}
       {/* Balance display */}
-      <div className="mb-6">
-        <h3 className="text-4xl text-black/80 font-bold mb-1">$23</h3>
-        <div className="flex items-center text-green-500 text-sm">
-          <TrendingUp size={16} className="mr-1" />
-          <span>+1.2%</span>
-        </div>
+      <div className="mb-6 px-4">
+        <h3 className="text-4xl text-black/80 font-bold mb-1">{`${
+          nativeBalance * nativePrice
+        } $`}</h3>
       </div>
       {/* Action buttons */}
       <div className="flex space-x-2 mb-6">
@@ -53,25 +70,12 @@ function Dashboard() {
       </div>
       <TokenCard
         symbol="SOL"
-        balance={20}
+        balance={nativeBalance}
         logoUrl="https://assets.infusewallet.xyz/assets/solana.png"
-        price={122}
+        price={nativePrice}
       />
       {/* Chart */}
-      <div className="h-[200px] bg-red-400/0 mb-2">
-        <ResponsiveContainer width="100%" height={300}>
-          <LineChart data={data}>
-            <Line
-              type="bump"
-              dataKey="value"
-              stroke="#00000f"
-              strokeWidth={2}
-              dot={false}
-              activeDot={{ r: 4 }}
-            />
-          </LineChart>
-        </ResponsiveContainer>
-      </div>
+      <Chart />
       <div className="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-white flex justify-center items-center py-4 px-6 border-t border-gray-100">
         <button
           className="flex flex-col items-center text-black"

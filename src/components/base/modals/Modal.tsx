@@ -66,7 +66,7 @@ const Modal = ({
 
       {/* Modal content */}
       <div
-        className={`z-10 bg-white/5 rounded-lg border-[#132236] border shadow-xl w-[80%] max-w-2xl p-6  m-4 ${className}`}
+        className={`z-10 bg-white rounded-lg border-[#132236] border shadow-xl w-[80%] max-w-2xl p-6  m-4 ${className}`}
         onClick={handleModalClick}
       >
         {children}
