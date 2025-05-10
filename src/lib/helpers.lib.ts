@@ -35,6 +35,10 @@ async function retryOperation<T>(
   );
 }
 
+export function isValidSolanaAddress(address: string): boolean {
+  return /^[0-9a-zA-Z]{32,44}$/.test(address);
+}
+
 export const getNativePrice = async (tokenId: string): Promise<number> => {
   const baseUrl = "https://api.coingecko.com/api/v3/simple/price";
 

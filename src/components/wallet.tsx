@@ -2,16 +2,18 @@
 import React, { useEffect, useState } from "react";
 
 import { Settings, CopyIcon } from "lucide-react";
-import toast from "react-hot-toast";
 import { useWallet } from "@lazorkit/wallet";
 import { useAuthStore } from "../store/authStore";
 import Dashboard from "./core/Wallet/Dashboard";
 import { formatAddress } from "../lib/helpers.lib";
 import Modal from "./base/modals/Modal";
 import { useAppStore } from "@/store/appStore";
-import StyledQRCode from "./ui/QrCode";
+
 import { getUserTokens } from "@/lib/assets.lib";
 import TokenCard from "./ui/TokenCard";
+import { ENV } from "@/lib/constant/env.constant";
+import SendModal from "./base/modals/SendModal";
+import ReceiveModal from "./base/modals/ReceiveModal";
 
 // Define types
 
@@ -40,9 +42,9 @@ const WalletApp: React.FC = () => {
       try {
         const assets = await getUserTokens(
           "BwY8CufbQMF7YPsPEfere1DhYPehTBPSpRJJKG2gTvDq",
-          "https://mainnet.helius-rpc.com/?api-key=e5fc821c-2b64-4d66-9d88-7cf162a5ffc8"
+          ENV.RPC_URL || ""
         );
-        //console.log("...tokens", assets);
+
         if (assets) {
           setTokens(assets);
         }
@@ -53,17 +55,6 @@ const WalletApp: React.FC = () => {
 
     fetchUserTokens();
   }, [activeTab, publicKey, setTokens]);
-  const handleCopytoClipboard = (value: string) => {
-    navigator.clipboard?.writeText(value).then(
-      () => {
-        toast.success("address copied");
-      },
-      (err) => {
-        // Failed to copy to clipboard
-        toast.error("Could not copy: ", err);
-      }
-    );
-  };
 
   return (
     <div className="bg-white min-h-screen sm:max-w-md w-full mx-auto">
@@ -129,35 +120,17 @@ const WalletApp: React.FC = () => {
         {activeTab === "Dashboard" && <Dashboard />}
         <Modal
           isOpen={isReceiveModal}
-          className="w-[95%] bg-black"
+          className="w-[98%] bg-black"
           onClose={toggleReceiveModal}
         >
-          <div className="">
-            <p className="px-2 text-xl text-black font-extrabold text-center mb-2">
-              Send Solana and SPL tokens to this address only
-            </p>
-            <div className="bg-black/5 py-2 px-3 rounded-md">
-              <StyledQRCode data={publicKey ? publicKey : "Empty"} />
-            </div>
-            <div
-              onClick={() =>
-                handleCopytoClipboard(publicKey || "Nothing to copy")
-              }
-              className="mt-4 w-[60%] ml-auto bg-black/25 h-10 py-2 rounded-xl px-3 mr-auto flex items-center justify-between "
-            >
-              <p className="text-xl font-medium">
-                {formatAddress(publicKey || "empty")}
-              </p>
-              <CopyIcon size={21} />
-            </div>
-          </div>
+          <ReceiveModal />
         </Modal>
         <Modal
           isOpen={isSendModal}
-          className="w-[98%]"
+          className="w-[98%] bg-black"
           onClose={toggleSendModal}
         >
-          <p>This is Send Modal</p>
+          <SendModal />
         </Modal>
 
         {/* Bottom navigation */}

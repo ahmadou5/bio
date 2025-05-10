@@ -11,10 +11,16 @@ import { useWallet } from "@lazorkit/wallet";
 import { ENV } from "@/lib/constant/env.constant";
 
 function Dashboard() {
-  const { toggleReceiveModal, toggleSendModal } = useAppStore();
+  const {
+    toggleReceiveModal,
+    toggleSendModal,
+    setNativeBalance,
+    nativeBalance,
+    nativePrice,
+    setNativePrice,
+  } = useAppStore();
   const { publicKey } = useWallet();
-  const [nativePrice, setNativePrice] = React.useState<number>(0);
-  const [nativeBalance, setNativeBalance] = React.useState<number>(0);
+
   const connection = new Connection(ENV.RPC_URL || "", {
     commitment: "confirmed",
   });

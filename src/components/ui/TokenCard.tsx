@@ -20,7 +20,10 @@ function TokenCard({
       }}
     >
       <div className="bg-red-500/0">
-        <img src={logoUrl} className="h-10 w-10 rounded-full" />
+        <img
+          src={logoUrl || "https://assets.infusewallet.xyz/assets/red.png"}
+          className="h-10 w-10 rounded-full"
+        />
       </div>
       <div className=" w-[85%] flex items-center justify-between">
         <div>
