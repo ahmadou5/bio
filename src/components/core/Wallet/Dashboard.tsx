@@ -1,5 +1,6 @@
 "use client";
 
+import TokenCard from "@/components/ui/TokenCard";
 import { useAppStore } from "@/store/appStore";
 import { TrendingUp, Home } from "lucide-react";
 import React from "react";
@@ -50,6 +51,12 @@ function Dashboard() {
           Receive
         </button>
       </div>
+      <TokenCard
+        symbol="SOL"
+        balance={20}
+        logoUrl="https://assets.infusewallet.xyz/assets/solana.png"
+        price={122}
+      />
       {/* Chart */}
       <div className="h-[200px] bg-red-400/0 mb-2">
         <ResponsiveContainer width="100%" height={300}>

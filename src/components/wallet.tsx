@@ -11,6 +11,7 @@ import Modal from "./base/modals/Modal";
 import { useAppStore } from "@/store/appStore";
 import StyledQRCode from "./ui/QrCode";
 import { getUserTokens } from "@/lib/assets.lib";
+import TokenCard from "./ui/TokenCard";
 
 // Define types
 
@@ -111,21 +112,16 @@ const WalletApp: React.FC = () => {
           ))}
         </div>
         {activeTab === "SPLs" && (
-          <div className="h-auto items-center flex-row w-full">
+          <div className="h-auto items-center overflow-y-auto flex-row w-full">
             {tokens &&
               tokens?.map((token, i) => (
-                <div
-                  className=" bg-black h-16 py-2 mt-2 mb-2 rounded-xl px-3 ml-auto mr-auto"
+                <TokenCard
                   key={i}
-                >
-                  {token.mint}
-                  <p>{token.name}</p>
-                  <img
-                    src={token?.image || "/solana"}
-                    alt="hey Solana"
-                    className="h-8 w-8"
-                  />
-                </div>
+                  symbol={token.symbol}
+                  balance={token.amount}
+                  logoUrl={token.image || ""}
+                  price={1}
+                />
               ))}
           </div>
         )}
