@@ -19,7 +19,7 @@ function Dashboard() {
     nativePrice,
     setNativePrice,
   } = useAppStore();
-  const { publicKey } = useWallet();
+  const { smartWalletAuthorityPubkey } = useWallet();
 
   const connection = new Connection(ENV.RPC_URL || "", {
     commitment: "confirmed",
@@ -35,10 +35,10 @@ function Dashboard() {
     };
     const fetchSolBalance = async () => {
       try {
-        if (!publicKey) {
+        if (!smartWalletAuthorityPubkey) {
           return;
         }
-        const user = new PublicKey(publicKey);
+        const user = new PublicKey(smartWalletAuthorityPubkey);
         const balance = await connection.getBalance(user);
         setNativeBalance(balance / LAMPORTS_PER_SOL);
       } catch (error) {
