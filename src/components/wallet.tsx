@@ -22,7 +22,7 @@ type TabType = "Dashboard" | "SPLs";
 // Sample data for the chart
 
 const WalletApp: React.FC = () => {
-  const { disconnect, publicKey } = useWallet();
+  const { disconnect, publicKey,  smartWalletAuthorityPubkey = useWallet();
   const [activeTab, setActiveTab] = useState<TabType>("Dashboard");
   const { setAuthenticate } = useAuthStore();
   const {
@@ -54,7 +54,7 @@ const WalletApp: React.FC = () => {
     };
 
     fetchUserTokens();
-  }, [activeTab, publicKey, setTokens]);
+  }, [activeTab, smartWalletAuthorityPubkey, setTokens]);
 
   return (
     <div className="bg-white min-h-screen sm:max-w-md w-full mx-auto">
@@ -65,7 +65,7 @@ const WalletApp: React.FC = () => {
           <div className="flex items-center">
             <div className="h-8 px-4 py-0.5 rounded-sm w-auto bg-black/30">
               <p className="font-semibold text-black/60 text-xl">
-                {formatAddress(publicKey || "")}
+                {formatAddress(smartWalletAuthorityPubkey || "")}
               </p>
             </div>
             <div>
