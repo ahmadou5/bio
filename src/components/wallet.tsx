@@ -22,7 +22,7 @@ type TabType = "Dashboard" | "SPLs";
 // Sample data for the chart
 
 const WalletApp: React.FC = () => {
-  const { disconnect, publicKey,  smartWalletAuthorityPubkey = useWallet();
+  const { disconnect, smartWalletAuthorityPubkey = useWallet();
   const [activeTab, setActiveTab] = useState<TabType>("Dashboard");
   const { setAuthenticate } = useAuthStore();
   const {
