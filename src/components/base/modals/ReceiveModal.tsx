@@ -6,7 +6,7 @@ import React from "react";
 import toast from "react-hot-toast";
 
 function ReceiveModal() {
-  const { publicKey } = useWallet();
+  const { smartWalletAuthorityPubkey } = useWallet();
   const handleCopytoClipboard = (value: string) => {
     navigator.clipboard?.writeText(value).then(
       () => {
@@ -25,14 +25,14 @@ function ReceiveModal() {
         Send Solana and SPL tokens to this address only
       </p>
       <div className="bg-black/5 py-2 px-3 rounded-md">
-        <StyledQRCode data={publicKey ? publicKey : "Empty"} />
+        <StyledQRCode data={smartWalletAuthorityPubkey ? smartWalletAuthorityPubkey : "Empty"} />
       </div>
       <div
-        onClick={() => handleCopytoClipboard(publicKey || "Nothing to copy")}
+        onClick={() => handleCopytoClipboard(smartWalletAuthorityPubkey || "Nothing to copy")}
         className="mt-4 w-[60%] ml-auto bg-black/25 h-10 py-2 rounded-xl px-3 mr-auto flex items-center justify-between "
       >
         <p className="text-xl font-medium">
-          {formatAddress(publicKey || "empty")}
+          {formatAddress(smartWalletAuthorityPubkey || "empty")}
         </p>
         <CopyIcon size={21} />
       </div>
